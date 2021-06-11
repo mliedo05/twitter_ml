@@ -16,3 +16,9 @@
  body{
     font-family: 'Pattaya', sans-serif;
  }
+
+ .imgRedonda {
+   width:150px;
+   height:150px;
+   border-radius:75px;
+}

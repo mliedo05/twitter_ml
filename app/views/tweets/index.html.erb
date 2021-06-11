@@ -16,15 +16,17 @@
       <td><%= tweet.retweet %> retweet</td>
       <td><%= link_to time_ago_in_words(tweet.created_at),tweet %></td>
       <p><%= tweet.likes.count %> <%= (tweet.likes.count) == 1? 'Like' : 'Likes'%><p>
-      <% like_not = tweet.likes.find {|like| like.user_id == current_user.id} %>
-      <% if like_not %>
-        <%= link_to (tweet_like_path(tweet, like_not)), method: :delete do %>
-          <i class="fas fa-heart fa-2x mb-3 text-danger"></i>
-        <% end %> 
-      <% else %>
-          <%= link_to (tweet_likes_path(tweet, like_not)), method: :post do %>
-          <i class="far fa-heart fa-2x mb-3 text-danger"></i>
-          <% end %>
+      <% if user_signed_in?  %> 
+        <% like_not = tweet.likes.find {|like| like.user_id == current_user.id} %>
+        <% if like_not %>
+          <%= link_to (tweet_like_path(tweet, like_not)), method: :delete do %>
+            <i class="fas fa-heart fa-2x mb-3 text-danger"></i>
+          <% end %> 
+        <% else %>
+            <%= link_to (tweet_likes_path(tweet, like_not)), method: :post do %>
+            <i class="far fa-heart fa-2x mb-3 text-danger"></i>
+            <% end %>
+        <% end %>
       <% end %>
     <% end %>
     </div>
