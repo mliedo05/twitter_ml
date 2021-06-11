@@ -14,7 +14,7 @@
       <h5 class="card-title"><td><%= tweet.user %></td></h5>
       <p class="card-text"><td><%= tweet.content %></td></p>
       <td><%= tweet.retweet %> retweet</td>
-      <p><%= tweet.likes.count %> <%= (tweet.likes.count) == 2? 'Like' : 'Like'%><p>
+      <p><%= tweet.likes.count %> <%= (tweet.likes.count) == 1? 'Like' : 'Like'%><p>
       <% pre_like = tweet.likes.find {|like| like.user_id == current_user.id} %>
       <% if pre_like %>
         <%= button_to 'Unlike', likes_path(tweet, pre_like), method: :delete %>

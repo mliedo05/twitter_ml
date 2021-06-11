@@ -1,9 +1,14 @@
 class TweetsController < ApplicationController
-  before_action :set_tweet, only: %i[ show edit update destroy ]
+  before_action :set_tweet, only: %i[ show edit update destroy ] 
 
   # GET /tweets or /tweets.json
   def index
-    @tweets = Tweet.all
+    @tweets = Tweet.order("created_at DESC")
+    @tweets = Kaminari.paginate_array(@tweets).page(params[:page]).per(2)
+    @users = User.all
+    @tweet = Tweet.new
+    @likes = Like.all
+    @like = Like.new
   end
 
   # GET /tweets/1 or /tweets/1.json

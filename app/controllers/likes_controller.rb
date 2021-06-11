@@ -6,21 +6,24 @@ class LikesController < ApplicationController
         if already_liked?
             flash[:notice] = "Tweet already liked"
         else
-            @tweet.Likes.create(user_id: current_user.id)
+            @tweet.likes.create(user_id: current_user.id)
         end
-        redirect_to root_path(@tweet)
+        redirect_to root_path
     end
     
     def destroy
-        if !(already_liked?)
-        flash[:notice] = "Tweet already unliked"
+        if already_liked?
+            @like.destroy
+        else
+            flash[:notice] = "Tweet already unliked"
         end
+        redirect_to root_path
     end
     
     private
 
     def find_tweet
-        @tweet = Tweet.find_by(id: params[:id])
+        @tweet = Tweet.find(params[:tweet_id])
     end
     
     def find_like
@@ -28,6 +31,6 @@ class LikesController < ApplicationController
     end
 
     def already_liked?
-        Like.where(user_id: current_user.id, tweet_id: params[:tweet_id].present?)
+        Like.find_by(user_id: current_user.id, tweet_id: params[:tweet_id]) != nil
     end
 end
