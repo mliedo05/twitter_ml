@@ -1,5 +1,5 @@
 class TweetsController < ApplicationController
-  before_action :set_tweet, only: %i[ show edit update destroy ] 
+  before_action :set_tweet, only: %i[ show edit update destroy retweet ] 
   skip_before_action :authenticate_user!
 
   # GET /tweets or /tweets.json
@@ -12,7 +12,23 @@ class TweetsController < ApplicationController
     @like = Like.new
   end
 
-  # GET /tweets/1 or /tweets/1.json
+  def retweet
+    redirect_to root_path, alert: 'No es posible hacer retweet' and return if @tweet.user == current_user
+    retweeted = Tweet.new(content: @tweet.content)
+    retweeted.user = current_user
+    retweeted.retweet_ref = @tweet.id
+    if retweeted.save
+      if @tweet.retweet.nil?
+        @tweet.update(retweet: @tweet.retweet = 1)
+      else
+        @tweet.update(retweet: @tweet.retweet += 1)
+      end
+        redirect_to root_path, notice: 'Retweet was posted successfully.'
+      else
+        redirect_to root_path, alert: "Unable to retweet."
+    end
+  end
+
   def show
   end
 
@@ -57,7 +73,7 @@ class TweetsController < ApplicationController
   def destroy
     @tweet.destroy
     respond_to do |format|
-      format.html { redirect_to tweets_url, notice: "Tweet was successfully destroyed." }
+      format.html { redirect_to root_path, notice: "Tweet was successfully destroyed." }
       format.json { head :no_content }
     end
   end

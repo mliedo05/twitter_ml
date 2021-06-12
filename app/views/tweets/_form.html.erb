@@ -10,13 +10,13 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= form.label :content %>
-    <%= form.text_area :content %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
+  <div class="card text-center mx-auto col-md-6 mb-3">
+    <div class="field">
+      <h3>Twitea</h3>
+      <%= form.text_area(:content, rows: 7, :cols=>60)%>
+    </div>
+    <div class="actions">
+      <%= form.submit "Create Tweet", :class => 'btn btn-danger' %>
+    </div>
   </div>
 <% end %>
