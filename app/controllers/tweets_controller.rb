@@ -5,7 +5,7 @@ class TweetsController < ApplicationController
   # GET /tweets or /tweets.json
   def index
     @tweets = Tweet.order("created_at DESC")
-    @tweets = Kaminari.paginate_array(@tweets).page(params[:page]).per(2)
+    @tweets = Kaminari.paginate_array(@tweets).page(params[:page]).per(50)
     @users = User.all
     @tweet = Tweet.new
     @likes = Like.all
