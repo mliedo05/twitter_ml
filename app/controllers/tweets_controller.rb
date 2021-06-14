@@ -52,6 +52,8 @@ class TweetsController < ApplicationController
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @tweet.errors, status: :unprocessable_entity }
+
+        redirect_to root_path
       end
     end
   end
