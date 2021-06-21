@@ -4,12 +4,24 @@ class TweetsController < ApplicationController
 
   # GET /tweets or /tweets.json
   def index
-    @tweets = Tweet.order("created_at DESC")
+    if signed_in?
+      @tweets = Tweet.tweets_for_me(current_user).order("created_at DESC")
+      if params[:q].present?
+        @tweets = Tweet.tweets_for_me(current_user).order("created_at DESC").where('content LIKE ?', "%#{params[:q]}%")
+      end
+    else
+      @tweets = Tweet.all.order("created_at DESC")
+      if params[:q].present?
+        @tweets = Tweet.where('content LIKE ?', "%#{params[:q]}%")
+      end
+    end
+
     @tweets = Kaminari.paginate_array(@tweets).page(params[:page]).per(50)
     @users = User.all
     @tweet = Tweet.new
     @likes = Like.all
     @like = Like.new
+    @friends = Friend.all
   end
 
   def retweet
@@ -47,13 +59,11 @@ class TweetsController < ApplicationController
 
     respond_to do |format|
       if @tweet.save
-        format.html { redirect_to @tweet, notice: "Tweet was successfully created." }
+        format.html { redirect_to root_path, notice: "Tweet was successfully created." }
         format.json { render :show, status: :created, location: @tweet }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @tweet.errors, status: :unprocessable_entity }
-
-        redirect_to root_path
       end
     end
   end
