@@ -35,14 +35,14 @@
         <td><img src="<%= tweet.user.user_photo %>"  height="200" class="card-img-top"></td>
         <h5 class="card-title"><td>@<%= tweet.user %></td></h5>
         <% hashtag = tweet.content.split(" ") %>
-        <% edited_words = [] %>
-        <% hashtag.each do |element| %>
-            <% if element.start_with?("#")%>
-                <% element = link_to element, controller: "tweets", q: element %>
+        <% words = [] %>
+        <% hashtag.each do |twt| %>
+            <% if twt.start_with?("#")%>
+                <% twt = link_to twt, controller: "tweets", q: twt %>
             <% end %>
-            <% edited_words.push(element) %>
+            <% words.push(twt) %>
         <% end %>
-        <p><%= raw edited_words.join(" ") %></p>
+        <p><%= raw words.join(" ") %></p>
         <td><%= tweet.retweet %> retweet</td>
         <% if tweet.retweet_ref != nil %>
                 <%= link_to "Ver tweet original de #{}", tweet_path(tweet.retweet_ref) %>
