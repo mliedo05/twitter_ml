@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
+  namespace :api do
+    namespace :v1 do
+      get 'news' , to: 'news#new_twett'
+      get '/:fecha1/:fecha2', to:'news#tweets_date'
+    end
+  end
+
   devise_for :admin_users, ActiveAdmin::Devise.config
   
   ActiveAdmin.routes(self)
