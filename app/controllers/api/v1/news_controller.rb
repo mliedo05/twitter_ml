@@ -2,7 +2,7 @@ module Api
     module V1
         class NewsController < ApplicationController
             include ActionController::HttpAuthentication::Basic::ControllerMethods
-            http_basic_authenticate_with name: "api", password: "api" only: :create_tweet
+            http_basic_authenticate_with name: "api", password: "api", only: :create_tweet
             skip_before_action :authenticate_user!
             def new_twett
                 tweets_array = []
@@ -43,15 +43,14 @@ module Api
             end
 
             def create_tweet
-                tweet = request.raw_post
-                tweet1 = JSON.parse(tweet)
-                user = User.find(tweet_new[:user_id]) rescue nil
-                new_tweet = Tweet.create(tweet1)
-                
-                if user != nil
-                  render json: new_tweet
+                temptw = request.raw_post
+                tweet = JSON.parse(temptw)
+                tweet_new = Tweet.create(tweet)
+                                
+                if Tweet.find_by(user_id: tweet_new[:user_id]) != nil
+                    render json: tweet_new
                 else
-                    render json: {"error": "User doesn't exist"}
+                    render json: {"ERROR": " USUARIO NO ENCONTRADO"}
                 end   
             end
         end
