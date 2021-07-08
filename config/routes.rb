@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       get 'news' , to: 'news#new_twett'
       get '/:fecha1/:fecha2', to:'news#tweets_date'
+      get '/create_tweet', to: 'news#create_tweet'
     end
   end
 
